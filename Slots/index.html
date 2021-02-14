@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Slot</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+            font-family: 'Roboto';
+            src: url(./asset/Roboto-Bold.ttf);
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        body {
+            min-height: 100vh;
+            padding: 10px 0;
+            background: url(asset/main\ theme.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            width: 45%;
+            max-width: 230px;
+            margin: 0px auto 30px;
+            display: block;
+        }
+        
+        .claimNow {
+            width: 30%;
+            max-width: 150px;
+            margin: 0 auto;
+            display: none;
+        }
+        
+        .tapToPlay {
+            width: 45%;
+            margin: 2vh 0;
+            max-width: 180px;
+            cursor: pointer;
+        }
+        
+        #amazon {
+            margin-top: 15%;
+            width: 89%;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+        }
+        
+        #won_txt {
+            display: none;
+            visibility: hidden;
+            font-family: 'Robonto', cursive;
+            flex-direction: column;
+            flex: 1;
+            position: relative;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            top: 18%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #amz {
+            font-size: 20px;
+        }
+        
+        #play-btn {
+            height: 70px;
+            width: 200px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            top: 75%;
+        }
+        
+        #won-btn {
+            height: 70px;
+            width: 200px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            top: 80%;
+        }
+        
+        #play_now {
+            width: 200px;
+        }
+        
+        #won_now {
+            width: 200px;
+        }
+        
+        #play_text {
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            font-size: 25px;
+            display: flex;
+            justify-content: center;
+            padding-top: 18px;
+            font-family: 'Robonto';
+            color: white;
+        }
+        
+        #won_text {
+            visibility: hidden;
+            visibility: visible;
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            font-size: 25px;
+            display: flex;
+            justify-content: center;
+            padding-top: 18px;
+            font-family: 'Robonto';
+            color: white;
+        }
+        
+        #you_have_won {
+            visibility: hidden;
+            z-index: 3;
+            position: absolute;
+            background: url(asset/KBC\ Pop\ up\ BG.png);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: 90% 67%;
+            background-position: 50% 90%;
+            height: 98.5vh;
+            width: 100%;
+            background-color: rgba(11, 24, 85, 0.5);
+        }
+        
+        .anime {
+            visibility: visible !important;
+            -webkit-animation: play_now1 .5s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+        
+        @-webkit-keyframes play_now1 {
+            from {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        #game-over {
+            display: none;
+            visibility: hidden;
+            width: 75%;
+            position: relative;
+            margin-right: auto;
+            margin-left: auto;
+            top: 25%;
+        }
+        
+        #over {
+            width: 88%;
+            position: relative;
+            margin-right: auto;
+            margin-left: auto;
+            display: flex;
+            margin-top: 100%;
+        }
+        
+        #over-btn {
+            height: 70px;
+            width: 200px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            top: 75%;
+            margin-top: 40%;
+        }
+        
+        #over_text {
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            font-size: 25px;
+            display: flex;
+            justify-content: center;
+            padding-top: 18px;
+            font-family: 'Robonto';
+            color: white;
+        }
+        
+        #play_again {
+            width: 200px;
+        }
+        
+        #controls {
+            display: flex;
+            height: 14vh;
+            width: 90%;
+            flex-wrap: wrap;
+            top: 37vh;
+            position: relative;
+        }
+        
+        .play {
+            width: 32%;
+            display: flex;
+            position: relative;
+            top: calc(-37% - 10px);
+            left: calc(75% - 10px);
+        }
+        
+        .pick_items {
+            height: 44%;
+            width: 75%;
+            display: flex;
+            position: relative;
+            top: calc(25% - 10px);
+            left: calc(2% - 10px);
+        }
+        
+        .next {
+            left: 11vh;
+        }
+        
+        .credit_limit {
+            width: 74%;
+            position: absolute;
+            left: 0vh;
+            top: calc(74% - 10px);
+        }
+        
+        .slideshow-container {
+            display: flex;
+            height: 89%;
+            width: 30%;
+            position: absolute;
+            flex-direction: row;
+            left: 40%;
+            top: -11%;
+        }
+        
+        .slideshow-container img {
+            height: 100%;
+            margin-left: 7%;
+        }
+        
+        .mySlides {
+            width: 100%;
+        }
+        
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 34%;
+            width: 9%;
+            height: 25px;
+            padding: 0px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        
+        .next {
+            right: 0;
+        }
+        
+        .text {
+            color: white;
+            /* background-color: red; */
+            font-size: 25px;
+            /* padding: 18px 12px; */
+            position: absolute;
+            font-family: 'Roboto', sans-serif;
+            font-family: roboto;
+            letter-spacing: 3px;
+            font-weight: bolder;
+            /* bottom: 8px; */
+            width: 200px;
+            top: 90%;
+            left: -101px;
+            z-index: 24;
+            text-align: center;
+        }
+        
+        .active:hover {
+            background-color: #717171;
+        }
+        
+        #container {
+            display: flex;
+            height: 50%;
+            width: 82%;
+            top: 29%;
+            position: absolute;
+        }
+        
+        #Slots {
+            width: 100%;
+            height: 31%;
+            position: absolute;
+            display: flex;
+            overflow: hidden;
+            flex-direction: row;
+        }
+        
+        #Slots2 {
+            width: 100%;
+            height: 32%;
+            position: absolute;
+            display: flex;
+            overflow: hidden;
+            flex-direction: row;
+            margin-top: 16vh;
+        }
+        
+        #Slots3 {
+            width: 100%;
+            height: 31%;
+            display: flex;
+            position: absolute;
+            overflow: hidden;
+            flex-direction: row;
+            top: 67%;
+        }
+        
+        #slot1,
+        #slot2,
+        #slot3,
+        #slot4,
+        #slot5,
+        #slot6,
+        #slot7,
+        #slot8,
+        #slot9 {
+            display: flex;
+            margin-top: 1vh;
+            position: relative;
+            margin-left: 0%;
+            background-size: 100%;
+            width: 100%;
+            height: 100;
+            flex: 1;
+        }
+        
+        .a1 {
+            background-image: url("asset/Scooter_icon.png");
+        }
+        
+        .a2 {
+            background-image: url("asset/cash_icon.png");
+        }
+        
+        .a3 {
+            background-image: url("asset/wedding_icon.png");
+        }
+        
+        .a4 {
+            background-image: url("asset/travel_icon.png");
+        }
+        
+        .a5 {
+            background-image: url("asset/Medical\ Fee_icon.png");
+        }
+        
+        .a6 {
+            background-image: url("asset/School\ Fee_icon.png");
+        }
+        
+        .a7 {
+            background-image: url("asset/Laptop_icon.png");
+        }
+        
+        .fade {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: .5s;
+        }
+        
+        @-webkit-keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+        
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+            to {
+                opacity: 1
+            }
+        }
+        
+        @media screen and (min-width: 900px) {
+            .boom {
+                max-width: 300px;
+                max-height: 360px;
+            }
+            .tapToPlay {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <section id="Slots">
+            <div id="slot1" class="a2"></div>
+            <div id="slot2" class="a2"></div>
+            <div id="slot3" class="a2"></div>
+        </section>
+        <section id="Slots2">
+            <div id="slot4" class="a1"></div>
+            <div id="slot5" class="a1"></div>
+            <div id="slot6" class="a1"></div>
+        </section>
+        <section id="Slots3">
+            <div id="slot7" class="a3"></div>
+            <div id="slot8" class="a3"></div>
+            <div id="slot9" class="a3"></div>
+        </section>
+    </div>
+    <div id="controls">
+        <img src="asset/Pick-Items_label.png" alt="Pick-Items_label" class="pick_items">
+
+        <div class="slideshow-container">
+
+            <div class="mySlides fade">
+
+                <img src="asset/Scooter_thumbnail.png" alt="scooter" class="scooter" id="scooty">
+                <div class="text">50,000,000</div>
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/Cash_thumbnail.png" alt="cash" class="cash" id="money">
+                <div class="text">42,000,000</div>
+
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/wedding_thumbnail.png" alt="wedding" class="wedding_expense" id="wedding">
+                <div class="text">40,000,000</div>
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/Travel_thumbnail.png" alt="travel" class="travel" id="destination">
+                <div class="text">10,000,000</div>
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/Medical Fee_thumbnail.png" alt="Medical Fee" class="medical_fees" id="medical">
+                <div class="text">30,000,000</div>
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/School Fee_thumnail.png" alt="School Fee" class="school_fees" id="school">
+                <div class="text">15,000,000</div>
+            </div>
+
+            <div class="mySlides fade">
+
+                <img src="asset/Laptop_thumbnail.png" alt="laptop" class="laptop" id="computer">
+
+                <div class="text">10,000,000</div>
+            </div>
+
+
+            <a class="prev" onclick="plusSlides(-1)" id="previous"> <img src="asset/prev.png" alt="preveious" id="prev_img"></a>
+            <a class="next" onclick="plusSlides(1)" id="next"> <img src="asset/next.png" alt="next" id="next_img "></a>
+
+        </div>
+
+        <img src="asset/Credit-Limit.png " alt="credit_limit " class="credit_limit " id="limit ">
+
+        <img src="asset/Play-Button.png " alt="play " class="play " onclick="doSlot()">
+
+    </div>
+    <div id="you_have_won">
+        <div id="won_txt">
+            <span id="amazon"><img src="asset/winner_button.png" alt="amazon-voucher" onclick="ctaClicked()" id="amazon"></span>
+        </div>
+        <div id="game-over">
+            <div id="over-btn">
+                <span id="over_text" onclick="play_again() "></span>
+                <img src="asset/Replay_button.png" alt="play now" id="play_again" onclick="play_again()" />
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    var clicked = 0;
+    var check = 0;
+    var btn;
+    var slideshow = document.getElementById("slideshow_trophy")
+    var a = 0;
+    var y = 0;
+    var x;
+    var back = document.getElementById("previous");
+    var slide = 0;
+    let man;
+    var info = true;
+    var doing = false;
+    var you_have_won = document.getElementById("you_have_won");
+
+    var amazon = document.getElementById("amazon");
+    var won_txt = document.getElementById("won_txt");
+
+    var game_over = document.getElementById("game-over");
+
+    /////////////////////////////////////////////////slide show////////////////////////////////////////////
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+
+        slide++;
+
+
+        showSlides(slideIndex += n);
+
+
+    }
+
+    function currentSlide(n) {
+
+        showSlides(slideIndex = n);
+
+    }
+
+    function showSlides(n) {
+        x = n;
+
+        console.log("value " + x)
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+
+        if (n > slides.length) {
+
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none ";
+        }
+
+        slides[slideIndex - 1].style.display = "block ";
+
+
+    }
+
+
+
+    function doSlot() {
+        clicked++;
+        check++;
+        document.getElementById("previous").onclick = null;
+        document.getElementById("next").onclick = null;
+        console.log("value " + x)
+
+        if (doing) {
+            return null;
+        }
+        doing = true;
+        if (clicked == 3) {
+            var numChanges = randomInt(1, 4) * 7
+            var numeberSlot1 = numChanges + randomInt(1, 7)
+            var numeberSlot2 = numChanges + 2 * 7 + randomInt(1, 7)
+            var numeberSlot3 = numChanges + 4 * 7 + randomInt(1, 7)
+
+        } else {
+            var numChanges = randomInt2(1, 4) * 7
+            var numeberSlot1 = numChanges + randomInt2(1, 7)
+            var numeberSlot2 = numChanges + 2 * 7 + randomInt2(1, 7)
+            var numeberSlot3 = numChanges + 4 * 7 + randomInt2(1, 7)
+        }
+
+        var i1 = 0;
+        var i2 = 0;
+        var i3 = 0;
+        var i4 = 0;
+        var i5 = 0;
+        var i6 = 0;
+        var i7 = 0;
+        var i8 = 0;
+        var i9 = 0;
+        slot1 = setInterval(spin1, 50);
+        slot2 = setInterval(spin2, 50);
+        slot3 = setInterval(spin3, 50);
+        slot4 = setInterval(spin4, 50);
+        slot5 = setInterval(spin5, 50);
+        slot6 = setInterval(spin6, 50);
+        slot7 = setInterval(spin7, 50);
+        slot8 = setInterval(spin8, 50);
+        slot9 = setInterval(spin9, 50);
+
+
+        function spin1() {
+            i1++;
+            if (i1 >= numeberSlot1) {
+                clearInterval(slot1);
+                return null;
+            }
+            slotTile = document.getElementById("slot1");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+            console.log("vale" + "a" + (parseInt(slotTile.className.substring(1)) + 1))
+        }
+
+        function spin2() {
+            i2++;
+            if (i2 >= numeberSlot2) {
+                clearInterval(slot2);
+                return null;
+            }
+            slotTile = document.getElementById("slot2");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin3() {
+            i3++;
+            if (i3 >= numeberSlot3) {
+                clearInterval(slot3);
+                return null;
+            }
+            slotTile = document.getElementById("slot3");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin4() {
+            i4++;
+            if (i4 >= numeberSlot1) {
+                clearInterval(slot4);
+                return null;
+            }
+            slotTile = document.getElementById("slot4");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin5() {
+            i5++;
+            if (i5 >= numeberSlot2) {
+                clearInterval(slot5);
+                return null;
+            }
+            slotTile = document.getElementById("slot5");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin6() {
+            i6++;
+            if (i6 >= numeberSlot3) {
+                clearInterval(slot6);
+                testWin();
+                if (check == 3) {
+                    testWin();
+                }
+                return null;
+            }
+            slotTile = document.getElementById("slot6");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin7() {
+            i7++;
+            if (i7 >= numeberSlot1) {
+                clearInterval(slot7);
+                return null;
+            }
+            slotTile = document.getElementById("slot7");
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin8() {
+            i8++;
+            if (i8 >= numeberSlot2) {
+                clearInterval(slot8);
+                return null;
+            }
+            slotTile = document.getElementById("slot8");
+
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+
+        function spin9() {
+            i9++;
+            if (i9 >= numeberSlot3) {
+
+                clearInterval(slot9);
+                // testWin();
+                // if(check==3){
+
+                //     testWin();
+                // }
+                return null;
+            }
+            slotTile = document.getElementById("slot9");
+
+
+            if (slotTile.className == "a7") {
+                slotTile.className = "a0";
+            }
+            slotTile.className = "a" + (parseInt(slotTile.className.substring(1)) + 1)
+        }
+    }
+
+    function testWin() {
+
+        var slot1 = document.getElementById("slot4").className
+        var slot2 = document.getElementById("slot5").className
+        var slot3 = document.getElementById("slot6").className
+        var slot4 = document.getElementById("slot1").className
+        var slot5 = document.getElementById("slot2").className
+        var slot6 = document.getElementById("slot3").className
+        var slot7 = document.getElementById("slot7").className
+        var slot8 = document.getElementById("slot8").className
+        var slot9 = document.getElementById("slot9").className
+        
+
+        if ((slot1 == slot2 && slot2 == slot3 && slot1 == "a7") || (slot1 == slot2 && slot2 == slot3 && slot1 == "a1") || (slot1 == slot2 && slot2 == slot3 && slot1 == "a2") ||
+            (slot1 == slot2 && slot2 == slot3 && slot1 == "a3") || (slot1 == slot2 && slot2 == slot3 && slot1 == "a4") || (slot1 == slot2 && slot2 == slot3 && slot1 == "a5") ||
+            (slot1 == slot2 && slot2 == slot3 && slot1 == "a6")) {
+
+            var slot_got = slot1;
+            var lastLetter = slot_got[slot_got.length - 1];
+            var t = parseInt(lastLetter);
+            console.log(" value of t" + t)
+
+            // x+=1;
+            console.log("value of x" + x)
+            if (x == 0) {
+                if (t == 7) {
+                    won_txt.style.zIndex = "4";
+                    won_txt.style.display = "block";
+                    won_txt.style.visibility = "visible";
+                    won_txt.style.display = "flex";
+                    you_have_won.classList.add("anime");
+
+                }
+            }
+            if (x == t) {
+                won_txt.style.display = "block";
+                won_txt.style.visibility = "visible";
+                won_txt.style.display = "flex";
+                you_have_won.classList.add("anime");
+            } else if (check == 3) {
+                console.log("check value" + check)
+                if (x !== t) {
+
+                    you_have_won.classList.add("anime");
+                    game_over.style.display = "block";
+                    game_over.style.visibility = "visible";
+                    you_have_won.style.visibility = "visible";
+                }
+            }
+        } else {
+            if (check == 3) {
+                you_have_won.classList.add("anime");
+                game_over.style.display = "block";
+                game_over.style.visibility = "visible";
+                you_have_won.style.visibility = "visible";
+            }
+        }
+        doing = false;
+    }
+
+    function randomInt2(min, max) {
+        return Math.floor((Math.random() * (min) + max + 3));
+    }
+
+    function randomInt(min, max) {
+        console.log("man" + x)
+        var c = Math.floor((Math.random() * 3));
+        console.log(c)
+        if (c < 2) {
+            return Math.floor((Math.random() * (min) + max + x + 3));
+        } else {
+            return Math.floor((Math.random() * (min) + max + x + 1));
+        }
+    }
+
+    function play_again() {
+        window.location.reload(false);
+    }
+
+    function ctaClicked() {
+        FbPlayableAd.onCTAClick();
+        return false;
+    }
+</script>
+
+</html>
